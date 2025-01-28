@@ -42,8 +42,12 @@ class Dao(object):
             .format(self._table_name, column_names, qmarks)
 
         self._conn.execute(stmt, params)
-
-    def find_all(self,primary_key):
+    def find_all(self):
+        c = self._conn.cursor()
+        c.execute('SELECT * FROM {}'.format(self._table_name))
+        return orm(c, self._dto_type) 
+    
+    def find_all_by_order(self,primary_key):
         c = self._conn.cursor()
         c.execute('SELECT * FROM {} ORDER BY {}'.format(self._table_name,primary_key))
         return orm(c, self._dto_type)
@@ -69,7 +73,6 @@ class Dao(object):
         self._conn.cursor().execute(stmt, params)
 
     def update(self, toSet,toadd ,whereToSet):
-        self._conn.execute("BEGIN TRANSACTION;")
         stmt = """
             UPDATE {table_name}
             SET {column} = {column} + ? 
@@ -78,11 +81,5 @@ class Dao(object):
         
         self._conn.cursor().execute(stmt, [toadd,whereToSet])
         self._conn.commit()
-
-
-    def employeeReport():
-        c = self._conn.cursor()
-        c.execute('SELECT * FROM {} ORDER BY {}'.format(self._table_name,primary_key))
-        return orm(c, self._dto_type)
 
 

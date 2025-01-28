@@ -7,7 +7,7 @@ import sys
 
 def main(args : list[str]):
     # inputfilename : str = args[1]
-    inputfilename : str = "actiontest.txt"
+    inputfilename : str = "action.txt"
     with open(inputfilename) as inputfile:
         for line in inputfile:
             splittedline : list[str] = line.strip().split(", ")
